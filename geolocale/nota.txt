@@ -1,0 +1,43 @@
+ <script>
+        const list = document.getElementById('list')
+        const carrinho = document.getElementById('carrinho')
+        const somatotal = document.getElementById('somatotal')
+        const carrinhoQuantidade = document.getElementById('carrinhoQuantidade')
+        const produtos = [{ id: 1, nome: 'monitor', preco: 25 }, { id: 2, nome: 'teclado', preco: 36 }];
+        const carrinhoLista = []
+        let total = 0; // Inicialize o total
+        let quantidadeProdutos = 0
+
+        produtos.forEach((produto) => {
+            list.innerHTML += `<p>${produto.nome}</p>
+            <button onclick="add(${produto.id})">add ao carrinho</button>`
+        })
+
+        function add(id) {
+            const itemadd = produtos.find(produto => produto.id === id);
+
+            if (itemadd) {
+                const itemaddCarrinho = carrinhoLista.find(item => item.id === id);
+                if (itemaddCarrinho) {
+                    itemaddCarrinho.quantidade++
+                } else {
+                    carrinhoLista.push({ ...itemadd, quantidade: 1 })
+                }
+                updateLista()
+            }
+        }
+
+        const updateLista = () => {
+            carrinho.innerHTML = ''
+            total = 0; // Redefina o total antes de recalculá-lo
+
+            carrinhoLista.forEach((produto) => {
+                const subtotal = produto.preco * produto.quantidade
+                carrinho.innerHTML += `<p>${produto.nome} - quantidade:(${produto.quantidade}) - R$ ${subtotal}</p>`
+                total +=  subtotal;// Adicione o subtotal ao total
+                quantidadeProdutos ++
+            })
+            somatotal.innerHTML = `Total: R$ ${total}`; // Exiba o total no elemento somatotal
+            carrinhoQuantidade.innerHTML = quantidadeProdutos
+        }
+    </script>
